@@ -7,11 +7,15 @@ import net.technokolik.blogwebsite.services.dtos.category.responses.GetAllCatego
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface CategoryService {
     void add (CreateCategoryRequest categoryRequest);
     void update (UpdateCategoryRequest updateCategoryRequest);
-    void delete (Integer id);
+    void delete (Long id);
+    List<GetAllCategories> getAll();
     Page<GetAllCategories> getAllViaPage(Pageable pageable);
-    Category getOriginalById(Integer id);
-    GetAllCategories getById(Integer id);
+    Category getOriginalById(Long id);
+    GetAllCategories getById(Long id);
+
 }

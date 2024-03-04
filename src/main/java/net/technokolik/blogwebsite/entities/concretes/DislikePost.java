@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import net.technokolik.blogwebsite.entities.abstracts.BaseEntity;
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "favorite_posts")
+@Table(name = "dislike_posts")
 @Entity
 @Data
 @AllArgsConstructor

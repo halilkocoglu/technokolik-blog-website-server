@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "users")
+@Table(name = "users",uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 @Data
 @Entity
 @AllArgsConstructor
@@ -21,7 +21,7 @@ public class User extends BaseEntity {
     private String firstname;
     @Column(name = "lastname")
     private String lastname;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
     @Column(name = "password")
     private String password;

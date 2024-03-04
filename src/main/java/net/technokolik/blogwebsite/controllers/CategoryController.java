@@ -10,8 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("categories")
 @AllArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
@@ -24,12 +26,16 @@ public class CategoryController {
         categoryService.update(request);
     }
     @DeleteMapping("{id}")
-    public void delete (@PathVariable("id") Integer id){
+    public void delete (@PathVariable("id") Long id){
         categoryService.delete(id);
     }
     @GetMapping("{id}")
-    public GetAllCategories getById(@RequestParam("id") Integer id){
+    public GetAllCategories getById(@RequestParam("id") Long id){
         return categoryService.getById(id);
+    }
+    @GetMapping("getAll")
+    public List<GetAllCategories> getAll() {
+        return  categoryService.getAll();
     }
     @GetMapping("viaPage")
     public Page<GetAllCategories> getAllViaPage(Pageable pageable){

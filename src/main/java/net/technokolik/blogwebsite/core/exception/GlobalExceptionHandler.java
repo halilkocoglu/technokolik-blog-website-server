@@ -26,6 +26,7 @@ public class GlobalExceptionHandler {
             }
         } else if (exception instanceof  BusinessException) {
             errorMessage.setStatus(400);
+            errorMessage.setMessage(exception.getMessage());
         } else if (exception instanceof  NotUniqueEmailException) {
             errorMessage.setMessage(exception.getMessage());
             errorMessage.setValidationErrors(((NotUniqueEmailException) exception).getValidationErros());
