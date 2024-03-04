@@ -8,6 +8,7 @@ import net.technokolik.blogwebsite.entities.concretes.Comment;
 import net.technokolik.blogwebsite.repositories.CommentRepository;
 import net.technokolik.blogwebsite.services.abstracts.CommentService;
 import net.technokolik.blogwebsite.services.businessRules.CommentBusinessRules;
+import net.technokolik.blogwebsite.services.businessRules.UserBusinessRules;
 import net.technokolik.blogwebsite.services.dtos.comment.requests.CreateCommentRequest;
 import net.technokolik.blogwebsite.services.dtos.comment.requests.UpdateCommentRequest;
 import net.technokolik.blogwebsite.services.dtos.comment.responses.GetAllComments;
@@ -23,11 +24,12 @@ public class CommentManager implements CommentService {
     private final CommentRepository commentRepository;
     private final MapperService mapperService;
     private final CommentBusinessRules commentBusinessRules;
+    private final UserBusinessRules userBusinessRules;
 
 
     @Override
     public void add(CreateCommentRequest request) {
-        commentBusinessRules.ifUserNotFoundShouldThrowException(request.getUserId());
+        userBusinessRules.ifUserNotFoundShouldThrowException(request.getUserId());
         commentBusinessRules.ifPostNotFoundShouldThrowException(request.getPostId());
         Comment comment = mapperService.forRequest().map(request, Comment.class);
         commentRepository.save(comment);
@@ -36,7 +38,7 @@ public class CommentManager implements CommentService {
 
     @Override
     public void update(UpdateCommentRequest request) {
-        commentBusinessRules.ifUserNotFoundShouldThrowException(request.getUserId());
+        userBusinessRules.ifUserNotFoundShouldThrowException(request.getUserId());
         commentBusinessRules.ifPostNotFoundShouldThrowException(request.getPostId());
         Comment comment = this.getOriginalById(request.getId());
         mapperService.forRequest().map(request, Comment.class);
@@ -75,7 +77,7 @@ public class CommentManager implements CommentService {
 
     @Override
     public List<GetAllComments> getByUserId(Long id) {
-        commentBusinessRules.ifUserNotFoundShouldThrowException(id);
+        userBusinessRules.ifUserNotFoundShouldThrowException(id);
         List<Comment> commentList = commentRepository.findByUserId(id);
         return commentList.stream().map(comment -> mapperService.forResponse().map(comment, GetAllComments.class)).toList();
     }

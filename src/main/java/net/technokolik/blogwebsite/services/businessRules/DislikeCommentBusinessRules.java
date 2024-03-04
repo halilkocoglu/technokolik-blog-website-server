@@ -11,8 +11,5 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class DislikeCommentBusinessRules {
-    public void  ifUserNotFoundShouldThrowException(Long id){
-
-    }
 
 }

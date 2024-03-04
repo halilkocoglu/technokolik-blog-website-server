@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class CommentBusinessRules {
     private final CommentRepository commentRepository;
-    public void ifUserNotFoundShouldThrowException(Long id){
-
-    }
     public void ifPostNotFoundShouldThrowException(Long id){};
     public void ifCommentNotFoundShouldThrowException(Long id){
         if(!commentRepository.existsById(id)){

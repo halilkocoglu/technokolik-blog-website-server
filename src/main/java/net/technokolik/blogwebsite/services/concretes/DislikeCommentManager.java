@@ -8,6 +8,7 @@ import net.technokolik.blogwebsite.repositories.DislikeCommentRepository;
 import net.technokolik.blogwebsite.services.abstracts.DislikeCommentService;
 import net.technokolik.blogwebsite.services.businessRules.CommentBusinessRules;
 import net.technokolik.blogwebsite.services.businessRules.DislikeCommentBusinessRules;
+import net.technokolik.blogwebsite.services.businessRules.UserBusinessRules;
 import net.technokolik.blogwebsite.services.dtos.dislikeComment.requests.CreateDislikeCommentRequest;
 import net.technokolik.blogwebsite.services.dtos.dislikeComment.requests.UpdateDislikeCommentRequest;
 import net.technokolik.blogwebsite.services.dtos.dislikeComment.responses.GetAllDislikeComments;
@@ -23,25 +24,27 @@ public class DislikeCommentManager implements DislikeCommentService {
     private final MapperService mapperService;
     private final CommentBusinessRules commentBusinessRules;
     private final DislikeCommentBusinessRules dislikeCommentBusinessRules;
+    private final UserBusinessRules userBusinessRules;
 
-    public DislikeCommentManager(DislikeCommentRepository dislikeCommentRepository, MapperService mapperService, CommentBusinessRules commentBusinessRules, DislikeCommentBusinessRules dislikeCommentBusinessRules) {
+    public DislikeCommentManager(DislikeCommentRepository dislikeCommentRepository, MapperService mapperService, CommentBusinessRules commentBusinessRules, DislikeCommentBusinessRules dislikeCommentBusinessRules, UserBusinessRules userBusinessRules) {
         this.dislikeCommentRepository = dislikeCommentRepository;
         this.mapperService = mapperService;
         this.commentBusinessRules = commentBusinessRules;
         this.dislikeCommentBusinessRules = dislikeCommentBusinessRules;
+        this.userBusinessRules = userBusinessRules;
     }
 
     @Override
     public void add(CreateDislikeCommentRequest request) {
         commentBusinessRules.ifCommentNotFoundShouldThrowException(request.getCommentId());
-        dislikeCommentBusinessRules.ifUserNotFoundShouldThrowException(request.getUserId());
+        userBusinessRules.ifUserNotFoundShouldThrowException(request.getUserId());
         DislikeComment dislikeComment = mapperService.forRequest().map(request, DislikeComment.class);
         dislikeCommentRepository.save(dislikeComment);
     }
     @Override
     public void update(UpdateDislikeCommentRequest request) {
         commentBusinessRules.ifCommentNotFoundShouldThrowException(request.getCommentId());
-        dislikeCommentBusinessRules.ifUserNotFoundShouldThrowException(request.getUserId());
+        userBusinessRules.ifUserNotFoundShouldThrowException(request.getUserId());
         DislikeComment dislikeComment = this.getOriginalById(request.getId());
         mapperService.forRequest().map(request, DislikeComment.class);
         dislikeCommentRepository.save(dislikeComment);
@@ -67,7 +70,7 @@ public class DislikeCommentManager implements DislikeCommentService {
 
     @Override
     public List<GetAllDislikeComments> getAllByUserId(Long id) {
-        dislikeCommentBusinessRules.ifUserNotFoundShouldThrowException(id);
+        userBusinessRules.ifUserNotFoundShouldThrowException(id);
         List<DislikeComment> commentList = dislikeCommentRepository.findByUserId(id);
         return commentList
                 .stream()
