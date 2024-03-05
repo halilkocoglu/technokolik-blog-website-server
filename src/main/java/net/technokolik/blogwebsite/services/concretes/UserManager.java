@@ -18,11 +18,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-@AllArgsConstructor
 public class UserManager implements UserService {
     private final UserRepository userRepository;
     private final MapperService mapperService;
     private final UserBusinessRules userBusinessRules;
+
+    public UserManager(UserRepository userRepository, MapperService mapperService, UserBusinessRules userBusinessRules) {
+        this.userRepository = userRepository;
+        this.mapperService = mapperService;
+        this.userBusinessRules = userBusinessRules;
+    }
+
     @Override
     public void add(CreateUserRequest request) {
 
@@ -33,7 +39,6 @@ public class UserManager implements UserService {
     @Override
     public void update(UpdateUserRequest request) {
         userBusinessRules.ifEmailExistsShouldThrowException(request);
-        //TODO: Eposta - kullanıcı konrolü sağla
         User user = this.getOriginalById(request.getId());
         mapperService.forRequest().map(request, User.class);
         userRepository.save(user);
@@ -59,6 +64,7 @@ public class UserManager implements UserService {
 
     @Override
     public GetAllUsers getByEmail(String email) {
+        userBusinessRules.ifEmailNotExistShouldThrowException(email);
         User user = userRepository.findByEmail(email);
         return mapperService.forResponse().map(user, GetAllUsers.class);
     }

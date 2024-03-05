@@ -20,4 +20,10 @@ public class CategoryBusinessRules {
         }
 
     }
+    public void ifCategoryIdNotExistShouldThrowException(Long id) {
+        if (!categoryRepository.existsById(id)){
+            throw  new BusinessException(Messages.getMessageForLocale("technokolik.constraint.category.id.not_exist", LocaleContextHolder.getLocale()));
+        }
+
+    }
 }

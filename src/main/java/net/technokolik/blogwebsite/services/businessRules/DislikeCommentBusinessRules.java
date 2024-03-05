@@ -9,7 +9,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class DislikeCommentBusinessRules {
 
 }

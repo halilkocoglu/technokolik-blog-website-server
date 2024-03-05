@@ -8,9 +8,13 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class CommentBusinessRules {
     private final CommentRepository commentRepository;
+
+    public CommentBusinessRules(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
+
     public void ifPostNotFoundShouldThrowException(Long id){};
     public void ifCommentNotFoundShouldThrowException(Long id){
         if(!commentRepository.existsById(id)){

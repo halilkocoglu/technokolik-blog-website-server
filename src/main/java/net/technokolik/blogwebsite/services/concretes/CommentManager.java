@@ -19,12 +19,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-@AllArgsConstructor
 public class CommentManager implements CommentService {
     private final CommentRepository commentRepository;
     private final MapperService mapperService;
     private final CommentBusinessRules commentBusinessRules;
     private final UserBusinessRules userBusinessRules;
+
+    public CommentManager(CommentRepository commentRepository, MapperService mapperService, CommentBusinessRules commentBusinessRules, UserBusinessRules userBusinessRules) {
+        this.commentRepository = commentRepository;
+        this.mapperService = mapperService;
+        this.commentBusinessRules = commentBusinessRules;
+        this.userBusinessRules = userBusinessRules;
+    }
 
 
     @Override
@@ -38,8 +44,6 @@ public class CommentManager implements CommentService {
 
     @Override
     public void update(UpdateCommentRequest request) {
-        userBusinessRules.ifUserNotFoundShouldThrowException(request.getUserId());
-        commentBusinessRules.ifPostNotFoundShouldThrowException(request.getPostId());
         Comment comment = this.getOriginalById(request.getId());
         mapperService.forRequest().map(request, Comment.class);
         commentRepository.save(comment);

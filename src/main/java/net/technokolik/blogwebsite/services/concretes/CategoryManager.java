@@ -19,13 +19,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-@AllArgsConstructor
 public class CategoryManager implements CategoryService {
 
 
     private final CategoryRepository categoryRepository;
     private final MapperService mapperService;
     private  final CategoryBusinessRules categoryBusinessRules;
+
+    public CategoryManager(CategoryRepository categoryRepository, MapperService mapperService, CategoryBusinessRules categoryBusinessRules) {
+        this.categoryRepository = categoryRepository;
+        this.mapperService = mapperService;
+        this.categoryBusinessRules = categoryBusinessRules;
+    }
 
     @Override
     public void add(CreateCategoryRequest request) {

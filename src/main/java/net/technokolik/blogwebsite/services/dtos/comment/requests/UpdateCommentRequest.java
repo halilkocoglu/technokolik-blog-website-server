@@ -11,8 +11,4 @@ public class UpdateCommentRequest {
     Long id;
     @Size(max = 300, message = "{technokolik.constraint.comment.content.size}")
     String content;
-    @NotNull(message = "{technokolik.constraint.comment.user_id.notnull}")
-    Long userId;
-    @NotNull(message = "{technokolik.constraint.comment.post_id.notnull}")
-    Long postId;
 }
